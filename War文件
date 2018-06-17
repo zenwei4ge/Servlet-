@@ -1,0 +1,14 @@
+一个war(web archive)文件包含一个web项目的文件。它可能有servlet，xml，jsp，image，html，css，js等文件。
+Web存档(war)文件包含Web应用程序的所有内容。它减少了传输文件所需要的时间
+war文件将所有文件合并为一个单位。 所以在将文件从客户端传输到服务器时需要更少的时间
+要创建war文件，需要使用JDK的jar工具，可使用jar 和-c选项来创建war文件
+          进入项目的目录(WEB-INF外部)，然后写入以下命令：
+
+              jar -cvf projectname.war *
+              -c用于创建文件-v生成详细输出，-f用于指定war文件名
+使用Eclipse导出War文件
+            在项目名称上点击右键，选择：Export->War File
+如何部署war文件
+          将war文件复制粘贴到apache tomcat的webapps目录中(如：D:\software\apache-tomcat-8.5.23\webapps
+如何手动提取war文件
+              jar -xvf projectname.war
