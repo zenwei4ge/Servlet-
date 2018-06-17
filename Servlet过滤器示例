@@ -1,0 +1,47 @@
+计算单页访问次数的示例
+            文件：MyFilter.java
+
+            import java.io.*;  
+            import javax.servlet.*;  
+
+            public class MyFilter implements Filter{  
+                static int count=0;  
+                public void init(FilterConfig arg0) throws ServletException {}  
+
+                public void doFilter(ServletRequest req, ServletResponse res,  
+                        FilterChain chain) throws IOException, ServletException {  
+
+                    PrintWriter out=res.getWriter();  
+                    chain.doFilter(request,response);  
+
+                    out.print("<br/>Total visitors "+(++count));  
+                    out.close();  
+
+                }  
+                public void destroy() {}  
+            }
+在过滤器中检查总响应时间的示例
+            文件：MyFilter.java
+            
+                import java.io.*;  
+                import javax.servlet.*;  
+
+                public class MyFilter implements Filter{  
+                    static int count=0;  
+                    public void init(FilterConfig arg0) throws ServletException {}  
+
+                    public void doFilter(ServletRequest req, ServletResponse res,  
+                        FilterChain chain) throws IOException, ServletException {  
+
+                        PrintWriter out=res.getWriter();  
+                        long before=System.currentTimeMillis();  
+
+                        chain.doFilter(request,response);  
+
+                        long after=System.currentTimeMillis();  
+                        out.print("<br/>Total response time "+(after-before)+" miliseconds");  
+                        out.close();  
+
+                    }  
+                    public void destroy() {}  
+                }
