@@ -1,0 +1,12 @@
+HttpServlet类扩展了GenericServlet类并实现了Serializable接口。它提供了http特定的方法，如:doGet，doPost，doHead，doTrace等
+HttpServlet类的方法
+            1	public void service(ServletRequest req,ServletResponse res)	通过将请求和响应对象转换为http类型将请求调度到受保护的service方法。
+            2	protected void service(HttpServletRequest req, HttpServletResponse res)	从service方法接收请求，并根据传入的http请求类型将请求发送          到doXXX()方法。
+            3	protected void doGet(HttpServletRequest req, HttpServletResponse res)	处理GET请求，它由Web容器调用。
+            4	protected void doPost(HttpServletRequest req, HttpServletResponse res)	处理POST请求，它由Web容器调用。
+            5	protected void doHead(HttpServletRequest req, HttpServletResponse res)	处理HEAD请求，它由Web容器调用。
+            6	protected void doOptions(HttpServletRequest req, HttpServletResponse res)	处理OPTIONS请求，它由Web容器调用。
+            7	protected void doPut(HttpServletRequest req, HttpServletResponse res)	处理PUT请求，它由Web容器调用。
+            8	protected void doTrace(HttpServletRequest req, HttpServletResponse res)	处理TRACE请求，它由Web容器调用。
+            9	protected void doDelete(HttpServletRequest req, HttpServletResponse res)	处理DELETE请求，它由Web容器调用。
+            10	protected long getLastModified(HttpServletRequest req)	返回自1970年1月1日GMT以来HttpServletRequest上次修改的时间。
