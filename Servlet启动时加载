@@ -1,0 +1,37 @@
+在web.xml文件中指定启动时加载
+            如果load-on-startup元素值为正，则会在Web应用程序部署或服务器启动时加载servlet。 它也被称为servlet的预初始化。
+            可以指定传递servlet的值(load-on-startup元素指定的值)为正或为负
+load-on-startup元素的优点
+            servlet在第一个请求时被加载。这意味着它会在第一次请求时消耗更多的时间。 如果在web.xml中指定启动加载，则servlet将在项目部署时间或服务器启         动时加载。
+实例
+          <?xml version="1.0" encoding="UTF-8"?>
+          <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+              id="WebApp_ID" version="3.1">
+              <display-name>helloworld</display-name>
+              <welcome-file-list>
+                  <welcome-file>index.html</welcome-file>
+                  <welcome-file>index.html</welcome-file>
+                  <welcome-file>index.jsp</welcome-file>
+                  <welcome-file>home.jsp</welcome-file>
+              </welcome-file-list>
+              <servlet>
+                  <servlet-name>com.yiibai.MyServlet</servlet-name>
+                  <servlet-class>MyServlet</servlet-class>
+                  <load-on-startup>0</load-on-startup>  
+              </servlet>
+              <servlet>
+                  <servlet-name>com.yiibai.BServlet</servlet-name>
+                  <servlet-class>BServlet</servlet-class>
+                  <load-on-startup>1</load-on-startup>  
+              </servlet>
+
+              <servlet-mapping>
+                  <servlet-name>MyServlet</servlet-name>
+                  <url-pattern>/index</url-pattern>
+              </servlet-mapping>
+          </web-app>
+          这两个servlet将在项目部署或服务器启动时加载。但是，首先将MyServlet加载，然后再加载BServlet
+传递负值
+        如果传递load-on-startup元素为负值，则此servlet将请求时第一个加载
