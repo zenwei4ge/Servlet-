@@ -1,0 +1,119 @@
+FilterConfig接口中有以下4个方法
+                public void init(FilterConfig config): init()方法仅在初始化过滤器时被调用(只调用一次)。
+                public String getInitParameter(String parameterName): 返回指定参数名称的参数值。
+                public java.util.Enumeration getInitParameterNames(): 返回包含所有参数名称的枚举。
+                public ServletContext getServletContext(): 返回ServletContext对象
+FilterConfig示例
+                如果将web.xml的中的construction参数值为no，则请求将转发到servlet，如果将参数值设置为：yes，则过滤器将使用消息创建响应：”此页面正在处
+              理中“
+                创建一个动态Web项目：FilterConfig
+                创建了4个文件
+                      index.html - 应用程序入口
+                      MyFilter.java - 过滤器实现
+                      HelloServlet.java - 一个简单的Servlet
+                      web.xml - 项目部署配置文件
+                 文件：index.html
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                        <meta charset="UTF-8">
+                        <title>FilterConfig配置应用示例</title>
+                        </head>
+                        <body>
+                            <div style="text-align: center;">
+                                <a href="servlet1">查看Filter配置信息</a>
+                            </div>
+                        </body>
+                        </html>
+                 文件：MyFilter.java
+                        package com.yiibai;
+
+                        import java.io.IOException;
+                        import java.io.PrintWriter;
+
+                        import javax.servlet.*;
+
+                        public class MyFilter implements Filter {
+
+                            FilterConfig config;
+
+                            public void init(FilterConfig config) throws ServletException {
+                                this.config = config;
+                            }
+
+                            public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
+                                    throws IOException, ServletException {
+                                resp.setCharacterEncoding("UTF-8");
+                                resp.setContentType("text/html;charset=UTF-8");
+                                req.setCharacterEncoding("UTF-8");
+                                PrintWriter out = resp.getWriter();
+
+                                String s = config.getInitParameter("construction");
+
+                                if (s.equals("yes")) {
+                                    out.print("此页面正在处理中");
+                                } else {
+                                    chain.doFilter(req, resp);// sends request to next resource
+                                }
+                            }
+
+                            public void destroy() {
+                            }
+                        }
+                   文件：HelloServlet.java
+                        package com.yiibai;
+
+                        import java.io.IOException;
+                        import java.io.PrintWriter;
+
+                        import javax.servlet.ServletException;
+                        import javax.servlet.http.*;
+
+                        public class HelloServlet extends HttpServlet {
+                            public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,                                    IOException {
+
+                                response.setCharacterEncoding("UTF-8");
+                                response.setContentType("text/html;charset=UTF-8");
+                                request.setCharacterEncoding("UTF-8");
+                                PrintWriter out = response.getWriter();
+
+                                out.print("<br>welcome to servlet<br>");
+
+                            }
+
+                        }
+                  文件：web.xml
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                            xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+                            xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+                            id="WebApp_ID" version="3.1">
+                            <display-name>FilterConfig</display-name>
+                            <welcome-file-list>
+                                <welcome-file>index.html</welcome-file>
+                                <welcome-file>index.jsp</welcome-file>
+                            </welcome-file-list>
+                            <servlet>
+                                <servlet-name>HelloServlet</servlet-name>
+                                <servlet-class>com.yiibai.HelloServlet</servlet-class>
+                            </servlet>
+
+                            <servlet-mapping>
+                                <servlet-name>HelloServlet</servlet-name>
+                                <url-pattern>/servlet1</url-pattern>
+                            </servlet-mapping>
+
+                            <filter>
+                                <filter-name>f1</filter-name>
+                                <filter-class>com.yiibai.MyFilter</filter-class>
+                                <init-param>
+                                    <param-name>construction</param-name>
+                                    <param-value>yes</param-value>
+                                </init-param>
+                            </filter>
+                            <filter-mapping>
+                                <filter-name>f1</filter-name>
+                                <url-pattern>/servlet1</url-pattern>
+                            </filter-mapping>
+                        </web-app>
+               部署此Web应用程序(在项目名称上点击右键->”Run On Server…”)，打开浏览器访问URL： http://localhost:8080/FilterConfig/ 
