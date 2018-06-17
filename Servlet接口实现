@@ -1,0 +1,52 @@
+提供了3个生命周期方法，用于初始化servlet，服务请求以及销毁servlet和2个非生命周期方法
+init，service和destroy是servlet的生命周期方法
+            public void init(ServletConfig config)	初始化servlet，它是servlet的生命周期方法，由web容器调用一次。
+            public void service(ServletRequest request,ServletResponse response)	为传入的请求提供响应。它由Web容器的每个请求调用。
+            public void destroy()	仅被调用一次，并且表明servlet正在被销毁
+public ServletConfig getServletConfig()	返回ServletConfig对象
+public String getServletInfo()	返回有关servlet的信息，如作者，版权，版本等           
+Servlet实例通过实现Servlet接口
+          MyServlet.java的代码如下所示 
+                  package com.yiibai;
+
+                  import java.io.*;
+                  import javax.servlet.*;
+
+                  /**
+                   * 实现Servlet接口的Servlet
+                   * @author Maxsu
+                   * @url 
+                   */
+                  public class MyServlet implements Servlet {
+                      ServletConfig config = null;
+
+                      public void init(ServletConfig config) {
+                          this.config = config;
+                          System.out.println("servlet is initialized");
+                      }
+
+                      public void service(ServletRequest req, ServletResponse res) throws IOException, ServletException {
+
+                          res.setContentType("text/html");
+
+                          PrintWriter out = res.getWriter();
+                          out.print("<html><body>");
+                          out.print("<div style=\"text-align:center;\"><h2>hello simple servlet</h2></div>");
+                          out.print("</body></html>");
+
+                      }
+
+                      public void destroy() {
+                          System.out.println("servlet is destroyed");
+                      }
+
+                      public ServletConfig getServletConfig() {
+                          return config;
+                      }
+
+                      public String getServletInfo() {
+                          return "copyright 2012-2020";
+                      }
+
+                  }
+                  
