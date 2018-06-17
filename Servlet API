@@ -1,0 +1,51 @@
+javax.servlet和javax.servlet.http包表示servlet api的接口和类。
+
+javax.servlet包中包含servlet或Web容器使用的许多接口和类。这些接口不是特定于任何协议。
+
+javax.servlet.http包中包含仅用于负责http请求的接口和类。
+
+
+javax.servlet包中的接口
+            Servlet
+            ServletRequest
+            ServletResponse
+            RequestDispatcher
+            ServletConfig
+            ServletContext
+            SingleThreadModel
+            Filter
+            FilterConfig
+            FilterChain
+            ServletRequestListener
+            ServletRequestAttributeListener
+            ServletContextListener
+            ServletContextAttributeListener
+javax.servlet包中的类
+            GenericServlet
+            ServletInputStream
+            ServletOutputStream
+            ServletRequestWrapper
+            ServletResponseWrapper
+            ServletRequestEvent
+            ServletContextEvent
+            ServletRequestAttributeEvent
+            ServletContextAttributeEvent
+            ServletException
+            UnavailableException
+javax.servlet.http包中的接口
+            HttpServletRequest
+            HttpServletResponse
+            HttpSession
+            HttpSessionListener
+            HttpSessionAttributeListener
+            HttpSessionBindingListener
+            HttpSessionActivationListener
+            HttpSessionContext (注：过时，已弃用)
+javax.servlet.http包中的类
+            HttpServlet
+            Cookie
+            HttpServletRequestWrapper
+            HttpServletResponseWrapper
+            HttpSessionEvent
+            HttpSessionBindingEvent
+            HttpUtils(注：过时，已弃用)
