@@ -1,0 +1,144 @@
+过滤器是在请求的预处理和后处理时调用的对象
+主要用于执行转换，日志记录，压缩，加解密，输入验证等过滤任务
+servlet过滤器是可插拔的，即它在web.xml文件中定义
+过滤器的使用
+            记录所有传入的请求
+            记录来自标计算机的IP地址的请求
+            转变/转换
+            数据压缩
+            加密和解密
+            输入验证等
+过滤器的优点
+            过滤器是可插拔的。
+            一个过滤器不依赖于另一个资源。
+            维护少，比较容易维护。
+过滤器API
+            javax.servlet包中包含Filter API的三个接口
+                        Filter
+                        FilterChain
+                        FilterConfig
+             Filter接口
+                      public void init(FilterConfig config)	init()方法只被调用一次，用于初始化过滤器。
+                      public void doFilter(HttpServletRequest request,HttpServletResponse response, FilterChain chain)	当用户请求过滤器所映
+                   射到资源时，会调用doFilter()方法，它用于执行过滤任务。
+                      public void destroy()	当过滤器从服务中取出时，调用此方法(仅一次)。
+             FilterChain接口
+                      FilterChain对象负责调用链中的下一个过滤器或资源
+                      包含一个方法
+                              public void doFilter(HttpServletRequest request，HttpServletResponse response)：它将控件传递给下一个过滤器或资源
+定义过滤器
+            <web-app>  
+
+            <filter>  
+              <filter-name>...</filter-name>  
+              <filter-class>...</filter-class>  
+            </filter>  
+
+            <filter-mapping>  
+              <filter-name>...</filter-name>  
+              <url-pattern>...</url-pattern>  
+            </filter-mapping>  
+
+            </web-app>
+            可以使用url-pattern或servlet-name
+简单示例
+              创建一个动态Web项目：SimpleFilter
+              文件：index.html
+                          <!DOCTYPE html>
+                          <html>
+                          <head>
+                          <meta charset="UTF-8">
+                          <title>过滤器的简单示例</title>
+                          </head>
+                          <body>
+                              <div style="font-align: center;">
+                                  <a href="servlet1">查看过滤器调用信息</a>
+                              </div>
+                          </body>
+                          </html>
+                 文件：MyFilter.java
+
+                      package com.yiibai;
+
+                      import java.io.IOException;
+                      import java.io.PrintWriter;
+
+                      import javax.servlet.*;
+
+                      public class MyFilter implements Filter {
+
+                          public void init(FilterConfig arg0) throws ServletException {
+                          }
+
+                          public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+                                  throws IOException, ServletException {
+
+                              response.setCharacterEncoding("UTF-8");
+                              response.setContentType("text/html;charset=UTF-8");
+                              request.setCharacterEncoding("UTF-8");
+                              PrintWriter out = response.getWriter();
+                              out.print("过滤器调用之前<br/>");
+
+                              chain.doFilter(request, response);// sends request to next resource
+
+                              out.print("过滤器调用之后<br/>");
+                          }
+
+                          public void destroy() {
+                          }
+                      }
+                      
+                   文件：MyServlet.java
+                          package com.yiibai;
+
+                          import java.io.IOException;
+                          import java.io.PrintWriter;
+
+                          import javax.servlet.ServletException;
+                          import javax.servlet.http.*;
+
+                          public class MyServlet extends HttpServlet {
+                              public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,      
+                             IOException {
+                                  response.setCharacterEncoding("UTF-8");
+                                  response.setContentType("text/html;charset=UTF-8");
+                                  request.setCharacterEncoding("UTF-8");
+                                  PrintWriter out = response.getWriter();
+                                  out.print("  -- 这是一个简单的测试Servlet.<br>");
+
+                              }
+
+                          }
+                    文件：web.xml
+                          <?xml version="1.0" encoding="UTF-8"?>
+                          <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+                              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+                              id="WebApp_ID" version="3.1">
+                              <display-name>SimpleFilter</display-name>
+                              <welcome-file-list>
+                                  <welcome-file>index.html</welcome-file>
+                                  <welcome-file>index.jsp</welcome-file>
+                              </welcome-file-list>
+                              <servlet>
+                                  <servlet-name>s1</servlet-name>
+                                  <servlet-class>com.yiibai.MyServlet</servlet-class>
+                              </servlet>
+
+                              <servlet-mapping>
+                                  <servlet-name>s1</servlet-name>
+                                  <url-pattern>/servlet1</url-pattern>
+                              </servlet-mapping>
+
+                              <filter>
+                                  <filter-name>f1</filter-name>
+                                  <filter-class>com.yiibai.MyFilter</filter-class>
+                              </filter>
+
+                              <filter-mapping>
+                                  <filter-name>f1</filter-name>
+                                  <url-pattern>/servlet1</url-pattern>
+                              </filter-mapping>
+                          </web-app>
+                   部署此Web应用程序(在项目名称上点击右键->”Run On Server…”)，打开浏览器访问URL： http://localhost:8080/SimpleFilter/
+                   可以看到过滤器调用的顺序
