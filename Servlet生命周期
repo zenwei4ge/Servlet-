@@ -1,0 +1,29 @@
+主要分为以下几个步骤：
+        加载Servlet类，如前面小节中的示例代码：MyServlet.java。
+        创建Servlet实例。
+        调用Servlet类的init方法。
+        调用Servlet类的service方法。
+        调用Servlet类的destroy方法。
+servlet有三种状态：新，就绪和结束。 
+        如果servlet实例被创建，则servlet处于新状态。 
+        调用init()方法后，Servlet进入就绪状态。 在就绪状态下，servlet执行所有任务。
+        当web容器调用destroy()方法时，它转移到结束状态。 
+1.加载Servlet类
+
+类加载器负责加载servlet类。 当Web容器接收到servlet的第一个请求时，将加载servlet类。
+
+2.创建Servlet实例
+
+Web容器在加载servlet类之后创建一个servlet的实例。servlet实例在servlet生命周期中只创建一次。
+
+3.调用init方法
+
+Web容器在创建servlet实例后调用init方法一次。 init方法用于初始化servlet。 它是javax.servlet.Servlet接口的生命周期方法。init方法的语法如下：
+
+4.调用service方法
+
+每当接收到servlet的请求时，Web容器都会调用service方法。如果servlet未初始化，则遵循上述前三个步骤，然后调用service方法。 如果servlet被初始化，它调用service方法。 请注意，servlet仅初始化一次。
+
+5.调用destroy方法
+
+从服务中删除servlet实例之前，Web容器调用destroy方法。它使servlet有机会清理所有资源，例如内存，线程等。
