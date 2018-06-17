@@ -1,0 +1,85 @@
+安装Tomcat
+访问地址：http://localhost:8080
+创建应用程序目录结构。
+创建一个Servlet
+编译Servlet
+创建应用程序部署描述符
+启动服务器并部署应用程序
+1.创建应用程序目录结构
+      在Apache-Tomcat\webapps目录下创建上述目录结构。所有HTML，静态文件(图像，css等)都直接保存在Web应用程序(webapps)文件夹下。 而所有Servlet类都保存在classes文件夹中。
+      web.xml(部署描述符)文件保存在WEB-INF文件夹下
+2.创建一个Servlet
+      创建servlet有三种不同的方法。
+      通过实现Servlet接口
+      扩展GenericServlet类
+      通过扩展HttpServlet类
+      大部分servlet是通过扩展HttpServlet抽象类创建的,我们将创建Servlet类但不需要覆盖service()方法。Servlet类将仅覆盖doGet()或doPost()方法
+      当servlet的请求进入时，Web容器首先将调用servlet的service()方法，并根据service()方法的请求类型来调用doGet()或doPost()方法
+      创建一个类：MyServlet.java，并将这个类文件放在F:\worksp\servlet\First目录下
+                import javax.servlet.*;
+                import javax.servlet.http.*;
+                import java.io.*;
+
+                public class MyServlet extends HttpServlet
+                {
+                 public void doGet(HttpServletRequest request,HttpServletResponse response) 
+                                     throws ServletException, IOException 
+                 {
+                   response.setContentType("text/html");
+                   PrintWriter out = response.getWriter();
+                   out.println("<html><body>");
+                   out.println("<h2 style='text-align:center'>Hello Servlet ~</h2>");
+                   out.println("</body></html>");
+                 }
+                }
+     然后编译它(在下一步中解释)，并将类生成的MyServlet.class文件粘贴到WEB-INF/classes/目录中，此WEB-INF/classes/目录必须在Tomcat/webapps目录中创建          
+3.编译Servlet类
+          要编译Servlet，需要一个JAR文件。不同的服务器需要不同的JAR文件。在Apache Tomcat服务器需要的是servlet-api.jar文件来编译servlet类
+          将下载好的servlet-api.jar文件粘贴到一个目录，如：F:\worksp\servlet\library目录下，用于编译Servlet类。
+      编译MyServlet类
+      F:\worksp\servlet\First> javac -Djava.ext.dirs=F:\worksp\servlet\library MyServlet.java
+      然后将类文件MyServlet.class粘贴到F:\worksp\servlet\First\WEB-INF\classes目录中
+4.创建部署描述符
+      部署描述符用于完成几个重要的工作，如：
+                将URL映射到Servlet类
+                初始化参数
+                定义错误页面
+                安全角色
+                声明标签库
+        创建一个简单的web.xml文件
+                  <?xml version="1.0" encoding="UTF-8"?>
+                  <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee"    
+                  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"    
+                  id="WebApp_ID" version="2.5">
+                    <display-name>MyFirstServlet</display-name>
+                    <welcome-file-list>
+                      <!--// 默认主页-->
+                      <welcome-file>index.html</welcome-file>
+                      <welcome-file>index.html</welcome-file>
+                      <welcome-file>index.jsp</welcome-file>
+                      <welcome-file>default.html</welcome-file>
+                      <welcome-file>default.html</welcome-file>
+                      <welcome-file>default.jsp</welcome-file>
+                    </welcome-file-list>
+                    <servlet>
+                      <description></description>
+                      <display-name>MyServlet</display-name><!--// 类的显示名称 -->
+                      <servlet-name>MyServlet</servlet-name><!--// 类的别名 -->
+                      <servlet-class>MyServlet</servlet-class><!--// 类的名称 -->
+                    </servlet>
+                    <servlet-mapping>
+                      <servlet-name>MyServlet</servlet-name><!--// 类的别名 -->
+                      <url-pattern>/hello</url-pattern><!--// 请求此类的对应URL -->
+                    </servlet-mapping>
+                  </web-app>
+        <web-app>表示整个应用程序。
+        <servlet>是<web-app>的子元素，代表servlet。
+        <servlet-name>是<servlet>的子元素，表示servlet的名称。
+        <servlet-class>是<servlet>的子元素，表示servlet的类。
+        <servlet-mapping>是<web-app>的子元素。它用于映射servlet。
+        <url-pattern>是<servlet-mapping>的子元素。客户端使用此模式来调用servlet。
+5.启动服务器并部署应用程序
+        将目录F:\worksp\servlet\First 拷贝到 D:\software\apache-tomcat-8.5.23\webapps 下部署这个应用程序。
+        双击startup.bat文件启动Apache Tomcat服务器
+
+      
